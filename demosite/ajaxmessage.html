@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Ajaxmessage</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+       
+    
+        <style>
+            .container{
+                width:400px;
+                padding: 30px;
+                margin-top: 20px;
+                background-color:thistle;
+            }
+
+            h1,h3,h4{
+                font-family: Verdana, Geneva, sans-serif;
+                text-align: center;
+                margin-top: 20px;
+                
+            }
+
+            input[type=text], textarea{
+                padding: 10px;
+                width: 330px;
+                resize: none;
+            }
+
+            input[type=submit]{
+                padding:5px 15px; 
+                border-radius: 5px;
+                margin: 0 auto;
+            }
+            .navbar{
+                text-align: center;
+                margin-bottom: 20px;
+                margin-top: 20px;
+            }
+
+            .navbar, a{
+             padding: 0px 15px 0px 15px;
+            }
+
+            .navbar{
+                margin: auto;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            hr{
+            border: 0.5px solid lightgray;
+            }
+
+            td, th{
+                padding:10px
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="navbar">
+            <h4>Back To</h4>
+              <a href="index.html">/Home</a>
+              <a href="/newmessage.html">/Newmessage</a>
+              <a href="/guestbook">/Guestbook</a>
+              <a href="ajaxmessage.html">/Ajaxmessage</a>
+              <hr>
+            </div>
+
+        <h1>/AJAXMESSAGE PAGE</h1>
+        <div class="container">
+            <form  method="POST" action="/ajaxmessage">
+                <div class="form-group">
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="country" name="country" placeholder="Country" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" name="message" rows="3" placeholder="Message" required></textarea>
+                </div>
+                <button type="button" id="ajaxBtn" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!--DISPLAY THE SAVED INFORMATION-->
+        <h4>SAVED DATA BELOW</h4>
+        <div id="data">
+        </div>
+
+        <script>
+            window.onload = event => {
+                var ajaxBtn = document.getElementById("ajaxBtn");
+
+                ajaxBtn.addEventListener("click", () => {
+                    var name = document.getElementById("name").value;
+                    var country = document.getElementById("country").value;
+                    var message = document.getElementById("message").value;
+                    console.log(name, country, message);
+
+                    if(name == "" || country == "" || message == "") {
+                        alert("You have to fill every field");
+                        return;
+                    }
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("data").innerHTML = this.responseText
+                            console.log(this.responseText);
+                        }
+                };
+
+                xmlhttp.open("POST", "/ajaxmessage", true);
+                xmlhttp.setRequestHeader(
+                    "Content-type",
+                    "application/x-www-form-urlencoded"
+                );
+                    xmlhttp.send("username=" + name + "&country=" + country + "&message=" + message);
+                });
+            };
+        </script>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </body>
+
+
+</html>
